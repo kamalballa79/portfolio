@@ -84,6 +84,62 @@ body::before {
     text-transform: uppercase;
 }
 
+/* --- Project Overlay --- */
+#project-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-color);
+    z-index: 2000;
+    display: none;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.overlay-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    position: relative;
+}
+
+.close-project {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    z-index: 2100;
+    background: none;
+    border: 1px solid var(--muted-color);
+    color: var(--muted-color);
+    padding: 0.5rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.close-project:hover {
+    background-color: var(--muted-color);
+    color: #fff;
+}
+
+.case-study-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0 50px 100px rgba(0,0,0,0.5);
+}
+
+body.no-scroll {
+    overflow: hidden;
+}
+
 .nav-links {
     display: flex;
     gap: 2rem;

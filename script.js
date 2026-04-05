@@ -7,6 +7,11 @@ const loaderCount = document.getElementById('loader-count');
 const mainNav = document.getElementById('main-nav');
 const typewriterEl = document.getElementById('typewriter-text');
 
+// Overlay Elements
+const projectOverlay = document.getElementById('project-overlay');
+const projectTrigger = document.getElementById('trigger-project');
+const closeOverlay = document.getElementById('close-project-btn');
+
 let mouseX = 0, mouseY = 0, dotX = 0, dotY = 0;
 
 // --- TextType Engine ---
@@ -161,3 +166,30 @@ document.querySelectorAll('.fade-up').forEach((el) => {
         scrollTrigger: { trigger: el, start: "top 90%", toggleActions: "play none none reverse" }
     });
 });
+
+// --- PROJECT OVERLAY FUNCTIONALITY ---
+if (projectTrigger && projectOverlay && closeOverlay) {
+    projectTrigger.addEventListener('click', () => {
+        document.body.classList.add('no-scroll');
+        projectOverlay.style.display = 'block';
+        gsap.fromTo(projectOverlay, { yPercent: 100 }, { yPercent: 0, duration: 1.2, ease: "power4.inOut" });
+    });
+
+    closeOverlay.addEventListener('click', () => {
+        gsap.to(projectOverlay, {
+            yPercent: 100,
+            duration: 0.8,
+            ease: "power4.inOut",
+            onComplete: () => {
+                projectOverlay.style.display = 'none';
+                document.body.classList.remove('no-scroll');
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" && projectOverlay.style.display === 'block') {
+            closeOverlay.click();
+        }
+    });
+}
