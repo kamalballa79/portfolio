@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamal Balla | UI/UX & Spatial Designer</title>
+    <!-- Google Fonts: Anton & JetBrains Mono (Variable) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS Reset & Variables --- */
+        :root {
+            --bg-color: #000000;
+            --text-color: #f0f0f0;
+            --muted-color: #ff3e3e; /* Cinematic Red Accent */
+            --border-color: #1a1a1a; 
+            --font-sans: 'Anton', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+        }
+
+        /* Prevent body scroll when project is open */
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        /* Architectural Grid Background */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(var(--border-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: center;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        /* Subtle Radial Fade for the Grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 10%, var(--bg-color) 85%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* --- Sticky Header --- */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 62, 62, 0.1);
+            transform: translateY(-100%); 
+        }
+
+        .header-brand {
+            font-family: var(--font-sans);
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            line-height: 1;
+            color: var(--muted-color);
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--muted-color);
+            transition: color 0.3s ease, transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        /* --- Project Overlay Scroll Page --- */
+        #project-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-color);
+            z-index: 2000;
+            display: none; /* Hidden by default */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .overlay-content {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            position: relative;
+        }
+
+        .close-project {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 2100;
+            background: none;
+            border: 1px solid var(--muted-color);
+            color: var(--muted-color);
+            padding: 0.5rem 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .close-project:hover {
+            background-color: var(--muted-color);
+            color: #fff;
+        }
+
+        .case-study-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.5);
+        }
+
+        /* --- Hero Type Component --- */
+        .hero-type-wrapper {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero-type-text {
+            position: relative;
+            font-size: clamp(4rem, 15vw, 25rem);
+            line-height: 0.85;
+            color: var(--text-color);
+            text-transform: uppercase;
+            z-index: 10;
+            display: inline-block;
+            letter-spacing: -0.02em;
+        }
+
+        .type-cursor {
+            color: var(--muted-color);
+            animation: blink 0.5s step-end infinite;
+            margin-left: 0.2rem;
+            font-weight: 100;
+        }
+
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* --- Crosshair Component --- */
+        .crosshair-line {
+            position: fixed;
+            background-color: var(--muted-color);
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.15;
+            will-change: transform;
+        }
+
+        .crosshair-h { width: 100vw; height: 1px; left: 0; top: 0; }
+        .crosshair-v { width: 1px; height: 100vh; left: 0; top: 0; }
+
+        a { color: inherit; text-decoration: none; }
+        ul { list-style: none; }
+
+        /* --- Typography Classes --- */
+        .mono-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--muted-color);
+        }
+
+        .display-text {
+            font-size: clamp(3rem, 7vw, 9rem);
+            font-weight: 400;
+            line-height: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .heading-2 {
+            font-size: clamp(2rem, 4vw, 4rem);
+            font-weight: 400;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        /* --- Custom Cursor --- */
+        #cursor-dot {
+            position: fixed;
+            top: 0; left: 0;
+            width: 10px; height: 10px;
+            background-color: var(--muted-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10001;
+            mix-blend-mode: normal;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        #cursor-dot.hovered {
+            width: 40px; height: 40px;
+            background-color: #fff;
+            mix-blend-mode: difference;
+        }
+
+        /* --- Fixed Bottom UI --- */
+        .fixed-corner { position: fixed; z-index: 90; }
+        .bottom-left { bottom: 2rem; left: 2rem; }
+        .bottom-right { bottom: 2rem; right: 2rem; }
+
+        @media (max-width: 768px) {
+            .bottom-left, .bottom-right { display: none; }
+            .crosshair-line { display: none; }
+        }
+
+        /* --- Global Layout --- */
+        .container {
+            padding: 0 2rem;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        section {
+            padding: 150px 0;
+            position: relative;
+        }
+
+        .section-header {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+            border-top: 1px solid #222;
+            padding-top: 1rem;
+            background-color: var(--bg-color); 
+        }
+
+        /* --- Works Section --- */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 3rem;
+            width: 100%;
+        }
+
+        .tilted-card {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .tilted-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #111;
+            border: 1px solid #111;
+        }
+
+        .tilted-card:hover .tilted-card-inner { border-color: var(--muted-color); }
+
+        .tilted-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+            filter: grayscale(1) brightness(0.6);
+            transition: filter 0.4s ease;
+        }
+
+        .tilted-card:hover img { filter: grayscale(1) brightness(1); }
+
+        .tilted-card-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 62, 62, 0.1); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            transform: translateZ(50px);
+            pointer-events: none;
+        }
+
+        .tilted-card:hover .tilted-card-overlay { opacity: 1; }
+
+        .tilted-card-demo-text {
+            color: #fff;
+            font-family: var(--font-sans);
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .tilted-card-caption {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--muted-color);
+            opacity: 0;
+            transition: opacity 0.3s;
+            transform: translateZ(30px);
+        }
+
+        .tilted-card:hover .tilted-card-caption { opacity: 1; }
+
+        /* --- Resume List --- */
+        .resume-list {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            border-top: 1px solid #222;
+        }
+
+        .resume-item {
+            display: grid;
+            grid-template-columns: 100px 1fr 1.5fr;
+            padding: 3rem 0;
+            border-bottom: 1px solid #222;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .resume-item:hover {
+            background-color: rgba(255, 62, 62, 0.03);
+            padding-left: 2rem;
+        }
+
+        /* --- Preloader --- */
+        #loader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background-color: var(--bg-color);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .count-up-text {
+            font-family: var(--font-mono);
+            font-size: clamp(2rem, 5vw, 4rem);
+            color: var(--muted-color);
+            letter-spacing: 0.1em;
+        }
+
+        footer {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div id="loader">
+        <div class="count-up-text"><span id="loader-count">0</span>%</div>
+    </div>
+
+    <!-- Sticky Header Navigation -->
+    <header class="main-header" id="main-nav">
+        <div class="header-brand">KAMAL BALLA</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#about" class="nav-link hover-target">[ ABOUT ]</a></li>
+                <li><a href="#works" class="nav-link hover-target">[ WORKS ]</a></li>
+                <li><a href="#contact" class="nav-link hover-target">[ CONTACT ]</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Project Overlay Page -->
+    <div id="project-overlay">
+        <button class="close-project hover-target" id="close-project-btn">[ ESC / CLOSE ]</button>
+        <div class="overlay-content">
+            <!-- Using the high-res infographic from the wireframe image -->
+            <img src="https://i.ibb.co/3ykXN5mD/Wireframe-1.png" alt="HELCOV Case Study" class="case-study-img" onerror="this.src='https://picsum.photos/id/1/1200/5000'">
+        </div>
+    </div>
+
+    <!-- Crosshair Elements -->
+    <div id="crosshair-h" class="crosshair-line crosshair-h"></div>
+    <div id="crosshair-v" class="crosshair-line crosshair-v"></div>
+
+    <div id="cursor-dot"></div>
+    
+    <div class="fixed-corner bottom-left mono-label">( BENGALURU <span id="clock">00:00:00</span> )</div>
+    <div class="fixed-corner bottom-right mono-label">( 2026 © ALL RIGHTS RESERVED )</div>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="hero-type-wrapper">
+            <h1 class="hero-type-text" id="typewriter-text"></h1>
+        </div>
+
+        <!-- Works Section -->
+        <section id="works">
+            <div class="section-header fade-up">
+                <span class="mono-label">( Selected Works )</span>
+                <span class="mono-label">[ PROJECTS ]</span>
+            </div>
+
+            <div class="works-grid fade-up">
+                <!-- Project 1 -->
+                <div class="tilted-card hover-target">
+                    <div class="tilted-card-inner">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273d9985092cd88bffd97653b58" alt="Project 1">
+                        <div class="tilted-card-overlay">
+                            <p class="tilted-card-demo-text">GNX Project</p>
+                        </div>
+                        <span class="tilted-card-caption">GNX - CONCEPT</span>
+                    </div>
+                </div>
+
+                <!-- Project 2: Spatial UI (The one that triggers the overlay) -->
+                <div class="tilted-card hover-target" id="trigger-spatial-ui">
+                    <div class="tilted-card-inner">
+                        <img src="https://picsum.photos/id/1015/300/300?grayscale" alt="Spatial UI Project">
+                        <div class="tilted-card-overlay">
+                            <p class="tilted-card-demo-text">Spatial UI / HELCOV</p>
+                        </div>
+                        <span class="tilted-card-caption">INTERFACE - 2025</span>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="tilted-card hover-target">
+                    <div class="tilted-card-inner">
+                        <img src="https://picsum.photos/id/1016/300/300?grayscale" alt="Project 3">
+                        <div class="tilted-card-overlay">
+                            <p class="tilted-card-demo-text">Brand System</p>
+                        </div>
+                        <span class="tilted-card-caption">SYSTEMS - 2024</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about">
+            <div class="section-header fade-up">
+                <span class="mono-label">( Identity )</span>
+                <span class="mono-label">[ 12.9716° N, 77.5946° E ]</span>
+            </div>
+            
+            <div class="about-grid">
+                <div class="about-left fade-up">
+                    <div class="about-label mono-text">Crafting clear,<br>engaging experiences.</div>
+                    <div class="expertise-list">
+                        <span class="mono-label" style="margin-bottom: 1rem;">Core Expertise</span>
+                        <div class="expertise-item">
+                            <span class="mono-text" style="color: var(--text-color);">Spatial UI</span>
+                            <span class="mono-label">/ 01</span>
+                        </div>
+                        <div class="expertise-item">
+                            <span class="mono-text" style="color: var(--text-color);">Human Factors</span>
+                            <span class="mono-label">/ 02</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-text">
+                    <h3 class="heading-2 split-text-target">I design intuitive, user-centered interfaces by balancing functionality, structure, and human behavior.</h3>
+                    <p class="fade-up">UI/UX Designer with a background in spatial experience design, bringing systems thinking and visual clarity into digital products.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <span class="mono-label fade-up" style="margin-bottom: 2rem;">( Contact )</span>
+        <h2 class="display-text fade-up" style="font-size: clamp(2rem, 5vw, 6rem);">Let's build together.</h2>
+        <a href="mailto:hello@kamalballa.com" class="footer-email fade-up hover-target" style="color: #fff; text-decoration: none; font-size: 2rem;">hello@kamalballa.com</a>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        const cursorDot = document.getElementById('cursor-dot');
+        const crosshairH = document.getElementById('crosshair-h');
+        const crosshairV = document.getElementById('crosshair-v');
+        const loaderCount = document.getElementById('loader-count');
+        const typewriterEl = document.getElementById('typewriter-text');
+        const mainNav = document.getElementById('main-nav');
+        
+        // Overlay Elements
+        const projectOverlay = document.getElementById('project-overlay');
+        const spatialTrigger = document.getElementById('trigger-spatial-ui');
+        const closeOverlay = document.getElementById('close-project-btn');
+
+        let mouseX = 0, mouseY = 0, dotX = 0, dotY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function renderAnimations() {
+            dotX += (mouseX - dotX) * 0.3;
+            dotY += (mouseY - dotY) * 0.3;
+            cursorDot.style.transform = `translate(${dotX}px, ${dotY}px)`;
+            crosshairH.style.transform = `translateY(${mouseY}px)`;
+            crosshairV.style.transform = `translateX(${mouseX}px)`;
+            requestAnimationFrame(renderAnimations);
+        }
+        requestAnimationFrame(renderAnimations);
+
+        // --- TextType Engine ---
+        const targetName = "KAMAL BALLA";
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function type() {
+            const typingSpeed = isDeleting ? 50 : 75; 
+            if (!isDeleting && charIndex < targetName.length) {
+                charIndex++;
+            } else if (isDeleting && charIndex > 0) {
+                charIndex--;
+            }
+            const displayed = targetName.substring(0, charIndex);
+            typewriterEl.innerHTML = displayed + '<span class="type-cursor">_</span>';
+            if (!isDeleting && charIndex === targetName.length) {
+                isDeleting = true;
+                setTimeout(type, 3000); 
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                setTimeout(type, 500);
+            } else {
+                setTimeout(type, typingSpeed);
+            }
+        }
+
+        // --- Overlay Logic ---
+        spatialTrigger.addEventListener('click', () => {
+            document.body.classList.add('no-scroll');
+            projectOverlay.style.display = 'block';
+            gsap.fromTo(projectOverlay, { yPercent: 100 }, { yPercent: 0, duration: 1.2, ease: "power4.inOut" });
+        });
+
+        closeOverlay.addEventListener('click', () => {
+            gsap.to(projectOverlay, {
+                yPercent: 100,
+                duration: 0.8,
+                ease: "power4.inOut",
+                onComplete: () => {
+                    projectOverlay.style.display = 'none';
+                    document.body.classList.remove('no-scroll');
+                }
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape" && projectOverlay.style.display === 'block') {
+                closeOverlay.click();
+            }
+        });
+
+        document.querySelectorAll('.hover-target, a').forEach(el => {
+            el.addEventListener('mouseenter', () => cursorDot.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursorDot.classList.remove('hovered'));
+        });
+
+        function splitTextIntoChars(target) {
+            const text = target.innerText;
+            target.innerHTML = '';
+            text.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.className = 'split-char';
+                span.innerHTML = char === ' ' ? '&nbsp;' : char;
+                target.appendChild(span);
+            });
+            return target.querySelectorAll('.split-char');
+        }
+
+        const aboutHeading = document.querySelector('.split-text-target');
+        const aboutChars = splitTextIntoChars(aboutHeading);
+        gsap.fromTo(aboutChars, { opacity: 0, y: 40 }, {
+            opacity: 1, y: 0, duration: 1.25, stagger: 0.05, ease: "power3.out",
+            scrollTrigger: { trigger: aboutHeading, start: "top bottom-=100px", toggleActions: "play none none none" }
+        });
+
+        document.querySelectorAll('.tilted-card').forEach(card => {
+            const inner = card.querySelector('.tilted-card-inner');
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const rotateX = ((e.clientY - rect.top - rect.height/2) / (rect.height/2)) * -12;
+                const rotateY = ((e.clientX - rect.left - rect.width/2) / (rect.width/2)) * 12;
+                inner.style.transform = `scale(1.05) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                inner.style.transition = 'transform 0.5s ease';
+                inner.style.transform = `scale(1) rotateX(0deg) rotateY(0deg)`;
+            });
+        });
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        const tl = gsap.timeline();
+        const counter = { value: 0 };
+        
+        tl.to(counter, {
+            value: 100,
+            duration: 1.5,
+            ease: "power1.inOut",
+            onUpdate: () => {
+                loaderCount.innerText = Math.round(counter.value);
+            }
+        })
+        .to('#loader', { yPercent: -100, duration: 1, ease: 'power4.inOut' })
+        .to(mainNav, { y: 0, duration: 0.8, ease: 'power3.out' }, "-=0.2") 
+        .call(() => type());
+
+        document.querySelectorAll('.fade-up:not(.split-text-target)').forEach((el) => {
+            gsap.fromTo(el, { opacity: 0, y: 30 }, {
+                opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+                scrollTrigger: { trigger: el, start: "top 90%", toggleActions: "play none none reverse" }
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === "#") return;
+                const target = document.querySelector(targetId);
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
