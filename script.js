@@ -7,15 +7,11 @@ const loaderCount = document.getElementById('loader-count');
 const mainNav = document.getElementById('main-nav');
 const typewriterEl = document.getElementById('typewriter-text');
 
-// Overlay Elements
-const projectOverlay = document.getElementById('project-overlay');
-const projectTrigger = document.getElementById('trigger-project');
-const closeOverlay = document.getElementById('close-project-btn');
 
 let mouseX = 0, mouseY = 0, dotX = 0, dotY = 0;
 
 // --- TextType Engine ---
-const targetName = "KAMAL BALLA";
+const targetName = "PORTFOLIO";
 let charIndex = 0;
 let isDeleting = false;
 
@@ -167,6 +163,73 @@ document.querySelectorAll('.fade-up').forEach((el) => {
     });
 });
 
+
+// Overlay Elements
+const bluecrossOverlay = document.getElementById('bluecross-overlay');
+const bluecrossTrigger = document.getElementById('trigger-bluecross');
+const closeBluecrossBtn = document.getElementById('close-bluecross-btn');
+
+const dotsOverlay = document.getElementById('dots-overlay');
+const dotsTrigger = document.getElementById('trigger-dots');
+const closeDotsBtn = document.getElementById('close-dots-btn');
+
+const projectOverlay = document.getElementById('project-overlay');
+const projectTrigger = document.getElementById('trigger-project');
+const closeOverlay = document.getElementById('close-project-btn');
+// --- BlueCross OVERLAY FUNCTIONALITY ---
+if (bluecrossTrigger && bluecrossOverlay && closeBluecrossBtn) {
+    bluecrossTrigger.addEventListener('click', () => {
+        document.body.classList.add('no-scroll');
+        bluecrossOverlay.style.display = 'block';
+        gsap.fromTo(bluecrossOverlay, { yPercent: 100 }, { yPercent: 0, duration: 1.2, ease: "power4.inOut" });
+    });
+
+    closeBluecrossBtn.addEventListener('click', () => {
+        gsap.to(bluecrossOverlay, {
+            yPercent: 100,
+            duration: 0.8,
+            ease: "power4.inOut",
+            onComplete: () => {
+                bluecrossOverlay.style.display = 'none';
+                document.body.classList.remove('no-scroll');
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" && bluecrossOverlay.style.display === 'block') {
+            closeBluecrossBtn.click();
+        }
+    });
+}
+
+// --- DOTS OVERLAY FUNCTIONALITY ---
+if (dotsTrigger && dotsOverlay && closeDotsBtn) {
+    dotsTrigger.addEventListener('click', () => {
+        document.body.classList.add('no-scroll');
+        dotsOverlay.style.display = 'block';
+        gsap.fromTo(dotsOverlay, { yPercent: 100 }, { yPercent: 0, duration: 1.2, ease: "power4.inOut" });
+    });
+
+    closeDotsBtn.addEventListener('click', () => {
+        gsap.to(dotsOverlay, {
+            yPercent: 100,
+            duration: 0.8,
+            ease: "power4.inOut",
+            onComplete: () => {
+                dotsOverlay.style.display = 'none';
+                document.body.classList.remove('no-scroll');
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" && dotsOverlay.style.display === 'block') {
+            closeDotsBtn.click();
+        }
+    });
+}
+
 // --- PROJECT OVERLAY FUNCTIONALITY ---
 if (projectTrigger && projectOverlay && closeOverlay) {
     projectTrigger.addEventListener('click', () => {
@@ -191,5 +254,206 @@ if (projectTrigger && projectOverlay && closeOverlay) {
         if (e.key === "Escape" && projectOverlay.style.display === 'block') {
             closeOverlay.click();
         }
+    });
+}
+
+// --- K FORM STUDIOS OVERLAY ---
+const kformOverlay = document.getElementById('kform-overlay');
+const kformTrigger = document.getElementById('trigger-kform');
+const closeKformBtn = document.getElementById('close-kform-btn');
+
+if (kformTrigger && kformOverlay && closeKformBtn) {
+    kformTrigger.addEventListener('click', () => {
+        document.body.classList.add('no-scroll');
+        kformOverlay.style.display = 'block';
+        gsap.fromTo(kformOverlay, { yPercent: 100 }, { yPercent: 0, duration: 1.2, ease: "power4.inOut" });
+    });
+
+    closeKformBtn.addEventListener('click', () => {
+        gsap.to(kformOverlay, {
+            yPercent: 100,
+            duration: 0.8,
+            ease: "power4.inOut",
+            onComplete: () => {
+                kformOverlay.style.display = 'none';
+                document.body.classList.remove('no-scroll');
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" && kformOverlay.style.display === 'block') {
+            closeKformBtn.click();
+        }
+    });
+}
+
+// --- Photography Overlay ---
+const photographyOverlay = document.getElementById('photography-overlay');
+const photographyTrigger = document.getElementById('trigger-photography');
+const closePhotographyBtn = document.getElementById('close-photography-btn');
+
+if (photographyTrigger && photographyOverlay && closePhotographyBtn) {
+    photographyTrigger.addEventListener('click', () => {
+        document.body.classList.add('no-scroll');
+        photographyOverlay.style.display = 'block';
+        gsap.fromTo(photographyOverlay, { yPercent: 100 }, { yPercent: 0, duration: 1.2, ease: "power4.inOut" });
+    });
+
+    closePhotographyBtn.addEventListener('click', () => {
+        gsap.to(photographyOverlay, {
+            yPercent: 100,
+            duration: 0.8,
+            ease: "power4.inOut",
+            onComplete: () => {
+                photographyOverlay.style.display = 'none';
+                document.body.classList.remove('no-scroll');
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" && photographyOverlay.style.display === 'block') {
+            closePhotographyBtn.click();
+        }
+    });
+}
+
+// --- Sensoslide Overlay ---
+const sensoslideOverlay = document.getElementById('sensoslide-overlay');
+const sensoslideTrigger = document.getElementById('trigger-sensoslide');
+const closeSensoslideBtn = document.getElementById('close-sensoslide-btn');
+
+if (sensoslideTrigger && sensoslideOverlay && closeSensoslideBtn) {
+    sensoslideTrigger.addEventListener('click', () => {
+        document.body.classList.add('no-scroll');
+        sensoslideOverlay.style.display = 'block';
+        gsap.fromTo(sensoslideOverlay, { yPercent: 100 }, { yPercent: 0, duration: 1.2, ease: "power4.inOut" });
+    });
+
+    closeSensoslideBtn.addEventListener('click', () => {
+        gsap.to(sensoslideOverlay, {
+            yPercent: 100,
+            duration: 0.8,
+            ease: "power4.inOut",
+            onComplete: () => {
+                sensoslideOverlay.style.display = 'none';
+                document.body.classList.remove('no-scroll');
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" && sensoslideOverlay.style.display === 'block') {
+            closeSensoslideBtn.click();
+        }
+    });
+}
+
+
+// --- zerotouch Overlay ---
+const zerotouchOverlay = document.getElementById('zerotouch-overlay');
+const zerotouchTrigger = document.getElementById('trigger-zerotouch');
+const closeZerotouchBtn = document.getElementById('close-zerotouch-btn');
+
+if (zerotouchTrigger && zerotouchOverlay && closeZerotouchBtn) {
+    zerotouchTrigger.addEventListener('click', () => {
+        document.body.classList.add('no-scroll');
+        zerotouchOverlay.style.display = 'block';
+        gsap.fromTo(zerotouchOverlay, { yPercent: 100 }, { yPercent: 0, duration: 1.2, ease: "power4.inOut" });
+    });
+
+    closeZerotouchBtn.addEventListener('click', () => {
+        gsap.to(zerotouchOverlay, {
+            yPercent: 100,
+            duration: 0.8,
+            ease: "power4.inOut",
+            onComplete: () => {
+                zerotouchOverlay.style.display = 'none';
+                document.body.classList.remove('no-scroll');
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" && zerotouchOverlay.style.display === 'block') {
+            closeZerotouchBtn.click();
+        }
+    });
+}
+
+// --- Architecture Overlay ---
+const architectureOverlay = document.getElementById('architecture-overlay');
+const architectureTrigger = document.getElementById('trigger-architecture');
+const closeArchitectureBtn = document.getElementById('close-architecture-btn');
+
+if (architectureTrigger && architectureOverlay && closeArchitectureBtn) {
+    architectureTrigger.addEventListener('click', () => {
+        document.body.classList.add('no-scroll');
+        architectureOverlay.style.display = 'block';
+        gsap.fromTo(architectureOverlay, { yPercent: 100 }, { yPercent: 0, duration: 1.2, ease: "power4.inOut" });
+    });
+
+    closeArchitectureBtn.addEventListener('click', () => {
+        gsap.to(architectureOverlay, {
+            yPercent: 100,
+            duration: 0.8,
+            ease: "power4.inOut",
+            onComplete: () => {
+                architectureOverlay.style.display = 'none';
+                document.body.classList.remove('no-scroll');
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" && architectureOverlay.style.display === 'block') {
+            closeArchitectureBtn.click();
+        }
+    });
+}
+
+// --- Re-Booth Overlay ---
+const reboothOverlay = document.getElementById('rebooth-overlay');
+const reboothTrigger = document.getElementById('trigger-rebooth');
+const closeReboothBtn = document.getElementById('close-rebooth-btn');
+
+if (reboothTrigger && reboothOverlay && closeReboothBtn) {
+    reboothTrigger.addEventListener('click', () => {
+        document.body.classList.add('no-scroll');
+        reboothOverlay.style.display = 'block';
+        gsap.fromTo(reboothOverlay, { yPercent: 100 }, { yPercent: 0, duration: 1.2, ease: "power4.inOut" });
+    });
+
+    closeReboothBtn.addEventListener('click', () => {
+        gsap.to(reboothOverlay, {
+            yPercent: 100,
+            duration: 0.8,
+            ease: "power4.inOut",
+            onComplete: () => {
+                reboothOverlay.style.display = 'none';
+                document.body.classList.remove('no-scroll');
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" && reboothOverlay.style.display === 'block') {
+            closeReboothBtn.click();
+        }
+    });
+}
+
+// --- Download CV Handler ---
+const downloadCvBtn = document.getElementById('download-cv-btn');
+if (downloadCvBtn) {
+    downloadCvBtn.addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.href = 'resume_kamal_P1.pdf';
+        link.download = 'resume_kamal_P1.pdf';
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     });
 }
